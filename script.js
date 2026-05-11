@@ -273,8 +273,27 @@ function closeModal() {
   if (modal) modal.style.display = "none";
 }
 
-function saveProducts() {
+async function saveProducts() {
   localStorage.setItem("products", JSON.stringify(products));
+
+  try {
+    const response = await fetch(`${API_URL}/api/products`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(products),
+    });
+
+    if (!response.ok) {
+      throw new Error("상품 DB 저장 실패");
+    }
+
+    const data = await response.json();
+    console.log("상품 DB 저장 완료:", data);
+  } catch (error) {
+    console.log("상품 저장 오류:", error.message);
+  }
 }
 
 async function saveOrderToAPI(order) {
@@ -477,7 +496,6 @@ function saveAdminProduct() {
   }
 
   saveProducts();
-  displayProducts(products);
   displayAdminProducts();
   clearAdminForm();
 }
@@ -504,7 +522,6 @@ function deleteProduct(productId) {
   products = products.filter((product) => product.id !== productId);
 
   saveProducts();
-  displayProducts(products);
   displayAdminProducts();
 }
 
