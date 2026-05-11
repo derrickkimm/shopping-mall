@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인 / 회원가입</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>FitGear Shop</h1>
+    <p>로그인 / 회원가입</p>
+  </header>
+
+  <div class="admin-link">
+    <a href="index.html">
+      <button>쇼핑몰로 돌아가기</button>
+    </a>
+  </div>
+
+  <section class="auth-box">
+    <h2>회원가입</h2>
+
+    <input type="text" id="signup-name" placeholder="이름">
+    <input type="email" id="signup-email" placeholder="이메일">
+    <input type="password" id="signup-password" placeholder="비밀번호">
+
+    <button onclick="signup()">회원가입</button>
+
+    <p id="signup-message"></p>
+  </section>
+
+  <section class="auth-box">
+    <h2>로그인</h2>
+
+    <input type="email" id="login-email" placeholder="이메일">
+    <input type="password" id="login-password" placeholder="비밀번호">
+
+    <button onclick="userLogin()">로그인</button>
+
+    <p id="login-user-message"></p>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

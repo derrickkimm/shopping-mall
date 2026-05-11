@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitGear Shop</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>FitGear Shop</h1>
+      <p>헬스용품 전문 쇼핑몰</p>
+    </header>
+
+    <div class="user-link">
+      <a href="login.html">
+        <button>로그인 / 회원가입</button>
+      </a>
+
+      <a href="profile.html">
+        <button>내 정보 수정</button>
+      </a>
+
+      <a href="my-orders.html">
+        <button>내 주문내역</button>
+      </a>
+
+      <button onclick="userLogout()">로그아웃</button>
+
+      <p id="current-user-message"></p>
+    </div>
+
+    <div class="admin-link">
+      <a href="admin.html">
+        <button>관리자 페이지</button>
+      </a>
+    </div>
+
+    <nav>
+      <button onclick="filterProducts('all')">전체</button>
+      <button onclick="filterProducts('equipment')">운동기구</button>
+      <button onclick="filterProducts('clothes')">운동복</button>
+      <button onclick="filterProducts('supplement')">보충제</button>
+    </nav>
+
+    <section class="search-box">
+      <input
+        type="text"
+        id="search-input"
+        placeholder="상품 검색..."
+        oninput="searchProducts()"
+      />
+    </section>
+
+    <section class="sort-box">
+      <button onclick="sortProducts('low')">가격 낮은순</button>
+      <button onclick="sortProducts('high')">가격 높은순</button>
+      <button onclick="sortProducts('name')">이름순</button>
+    </section>
+
+    <main>
+      <section class="products" id="product-list"></section>
+
+      <aside class="cart">
+        <h2>장바구니</h2>
+        <ul id="cart-list"></ul>
+        <p>총액: $<span id="total">0</span></p>
+      </aside>
+    </main>
+
+    <section class="checkout">
+      <h2>주문하기</h2>
+
+      <input type="text" id="customer-name" placeholder="이름" />
+      <input type="email" id="customer-email" placeholder="이메일" />
+      <input type="text" id="customer-address" placeholder="주소" />
+
+      <button onclick="placeOrder()">주문하기</button>
+
+      <p id="order-message"></p>
+    </section>
+
+    <section class="orders">
+      <h2>주문 내역</h2>
+      <button onclick="clearOrders()">전체 주문 초기화</button>
+      <ul id="order-list"></ul>
+    </section>
+
+    <div class="modal" id="product-modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img id="modal-image" src="" alt="" />
+        <h2 id="modal-name"></h2>
+        <p id="modal-category"></p>
+        <p id="modal-price"></p>
+        <p id="modal-description"></p>
+        <button id="modal-cart-btn">장바구니 추가</button>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2026 FitGear Shop</p>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
