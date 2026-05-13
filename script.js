@@ -6,7 +6,7 @@ const defaultProducts = [
     name: "덤벨 세트",
     category: "equipment",
     price: 49,
-    image: "https://via.placeholder.com/200?text=Dumbbell",
+    image: "images/dumbbell.webp",
     description: "홈트레이닝과 근력 운동에 좋은 기본 덤벨 세트입니다.",
     stock: 5,
   },
@@ -48,6 +48,96 @@ const defaultProducts = [
     description:
       "스쿼트, 데드리프트 같은 고중량 운동 시 허리를 지지해주는 리프팅 벨트입니다.",
     stock: 6,
+  },
+  {
+    id: 20,
+    name: "퍼포먼스 머슬핏 티셔츠",
+    category: "clothes",
+    price: 29,
+    image: "https://via.placeholder.com/200?text=Muscle+Fit+Tee",
+    description: "운동 시 땀 배출이 뛰어난 머슬핏 기능성 티셔츠입니다.",
+    stock: 10,
+  },
+  {
+    id: 21,
+    name: "트레이닝 조거 팬츠",
+    category: "clothes",
+    price: 39,
+    image: "https://via.placeholder.com/200?text=Jogger+Pants",
+    description: "헬스와 러닝에 적합한 편안한 조거 팬츠입니다.",
+    stock: 8,
+  },
+  {
+    id: 22,
+    name: "오버핏 후드집업",
+    category: "clothes",
+    price: 59,
+    image: "https://via.placeholder.com/200?text=Hoodie",
+    description: "운동 전후 가볍게 걸치기 좋은 오버핏 후드집업입니다.",
+    stock: 6,
+  },
+  {
+    id: 23,
+    name: "컴프레션 레깅스",
+    category: "clothes",
+    price: 35,
+    image: "https://via.placeholder.com/200?text=Leggings",
+    description: "하체 운동 시 안정적인 압박을 제공하는 레깅스입니다.",
+    stock: 7,
+  },
+  {
+    id: 24,
+    name: "헬스 반바지",
+    category: "clothes",
+    price: 27,
+    image: "https://via.placeholder.com/200?text=Gym+Shorts",
+    description: "통기성이 뛰어난 헬스 전용 반바지입니다.",
+    stock: 12,
+  },
+  {
+    id: 30,
+    name: "웨이 프로틴",
+    category: "supplement",
+    price: 59,
+    image: "https://via.placeholder.com/200?text=Whey+Protein",
+    description: "근육 성장과 회복에 도움을 주는 프리미엄 웨이 프로틴입니다.",
+    stock: 15,
+  },
+  {
+    id: 31,
+    name: "BCAA 아미노산",
+    category: "supplement",
+    price: 35,
+    image: "https://via.placeholder.com/200?text=BCAA",
+    description: "운동 중 근손실 방지와 회복을 위한 BCAA 보충제입니다.",
+    stock: 11,
+  },
+  {
+    id: 32,
+    name: "크레아틴 파우더",
+    category: "supplement",
+    price: 42,
+    image: "https://via.placeholder.com/200?text=Creatine",
+    description: "고강도 운동 퍼포먼스를 향상시키는 크레아틴입니다.",
+    stock: 9,
+  },
+  {
+    id: 33,
+    name: "프리워크아웃",
+    category: "supplement",
+    price: 49,
+    image: "https://via.placeholder.com/200?text=Pre+Workout",
+    description: "운동 전 집중력과 에너지를 높여주는 부스터입니다.",
+    stock: 8,
+  },
+  {
+    id: 34,
+    name: "멀티비타민",
+    category: "supplement",
+    price: 24,
+    image: "https://via.placeholder.com/200?text=Vitamin",
+    description: "운동과 건강 관리를 위한 종합 비타민입니다.",
+    stock: 14,
   },
 ];
 
@@ -318,6 +408,41 @@ async function saveOrderToAPI(order) {
   }
 }
 
+function processPayment() {
+  const cardNumber = document.getElementById("card-number").value.trim();
+  const cardExpiry = document.getElementById("card-expiry").value.trim();
+  const cardCvc = document.getElementById("card-cvc").value.trim();
+  const orderMessage = document.getElementById("order-message");
+
+  if (!cardNumber || !cardExpiry || !cardCvc) {
+    orderMessage.textContent = "카드 정보를 모두 입력해주세요.";
+    return;
+  }
+
+  if (cardNumber.length !== 16 || isNaN(cardNumber)) {
+    orderMessage.textContent = "카드번호는 숫자 16자리여야 합니다.";
+    return;
+  }
+
+  if (!cardExpiry.includes("/") || cardExpiry.length !== 5) {
+    orderMessage.textContent = "유효기간은 MM/YY 형식으로 입력해주세요.";
+    return;
+  }
+
+  if (cardCvc.length !== 3 || isNaN(cardCvc)) {
+    orderMessage.textContent = "CVC는 숫자 3자리여야 합니다.";
+    return;
+  }
+
+  orderMessage.textContent = "결제 처리 중...";
+
+  setTimeout(() => {
+    orderMessage.textContent = "결제가 성공적으로 완료되었습니다.";
+    placeOrder();
+    showReceipt();
+  }, 1000);
+}
+
 function placeOrder() {
   const name = document.getElementById("customer-name").value.trim();
   const email = document.getElementById("customer-email").value.trim();
@@ -337,6 +462,32 @@ function placeOrder() {
   if (!name || !email || !address) {
     orderMessage.textContent = "이름, 이메일, 주소를 모두 입력해주세요.";
     return;
+  }
+
+  function showReceipt() {
+    const receiptBox = document.getElementById("receipt-box");
+
+    if (!receiptBox) return;
+
+    const lastOrder = orders[orders.length - 1];
+
+    if (!lastOrder) return;
+
+    const itemNames = lastOrder.items
+      .map((item) => `${item.name} x ${item.quantity}`)
+      .join("<br>");
+
+    receiptBox.innerHTML = `
+    <div class="receipt">
+      <h3>결제 영수증</h3>
+      <p><strong>주문번호:</strong> ${lastOrder.id}</p>
+      <p><strong>주문자:</strong> ${lastOrder.customerName}</p>
+      <p><strong>상품:</strong><br>${itemNames}</p>
+      <p><strong>총 결제금액:</strong> $${lastOrder.total}</p>
+      <p><strong>결제상태:</strong> 결제 완료</p>
+      <p><strong>주문일:</strong> ${lastOrder.date}</p>
+    </div>
+  `;
   }
 
   const total = cart.reduce((sum, item) => {
@@ -581,6 +732,7 @@ function adminLogin() {
     document.getElementById("admin-panel").style.display = "block";
 
     displayAdminProducts();
+    displayAdminOrders();
   } else {
     message.textContent = "아이디 또는 비밀번호가 틀렸습니다.";
   }
@@ -604,7 +756,9 @@ function checkAdminLogin() {
   if (isLoggedIn === "true") {
     adminLoginBox.style.display = "none";
     adminPanel.style.display = "block";
+
     displayAdminProducts();
+    displayAdminOrders();
   } else {
     adminLoginBox.style.display = "block";
     adminPanel.style.display = "none";
@@ -808,6 +962,52 @@ function updateProfile() {
   document.getElementById("profile-password").value = "";
 }
 
+async function displayAdminOrders() {
+  const adminOrderList = document.getElementById("admin-order-list");
+
+  if (!adminOrderList) return;
+
+  adminOrderList.innerHTML = "";
+
+  try {
+    const response = await fetch(`${API_URL}/api/orders`);
+    const orders = await response.json();
+
+    if (!response.ok) {
+      adminOrderList.innerHTML = "<p>주문내역을 불러오지 못했습니다.</p>";
+      return;
+    }
+
+    if (orders.length === 0) {
+      adminOrderList.innerHTML = "<p>아직 주문내역이 없습니다.</p>";
+      return;
+    }
+
+    orders.forEach((order) => {
+      const itemNames = order.items
+        .map((item) => `${item.name} x ${item.quantity}`)
+        .join(", ");
+
+      adminOrderList.innerHTML += `
+        <li>
+          <strong>주문번호:</strong> ${order.id}<br>
+          <strong>사용자 ID:</strong> ${order.userId}<br>
+          <strong>사용자 이메일:</strong> ${order.userEmail}<br>
+          <strong>주문자:</strong> ${order.customerName}<br>
+          <strong>배송 이메일:</strong> ${order.email}<br>
+          <strong>주소:</strong> ${order.address}<br>
+          <strong>상품:</strong> ${itemNames}<br>
+          <strong>총액:</strong> $${order.total}<br>
+          <strong>주문일:</strong> ${order.date}
+        </li>
+      `;
+    });
+  } catch (error) {
+    adminOrderList.innerHTML =
+      "<p>서버 연결 실패로 주문내역을 불러올 수 없습니다.</p>";
+  }
+}
+
 // 페이지별 실행
 if (document.getElementById("product-list")) {
   loadProductsFromAPI();
@@ -819,10 +1019,6 @@ if (document.getElementById("cart-list")) {
 
 if (document.getElementById("order-list")) {
   displayOrders();
-}
-
-if (document.getElementById("admin-product-list")) {
-  displayAdminProducts();
 }
 
 checkAdminLogin();

@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>관리자 페이지</title>
-
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <header>
       <h1>관리자 상품 관리</h1>
@@ -29,31 +29,36 @@
     <section class="admin" id="admin-panel" style="display: none">
       <button onclick="adminLogout()">로그아웃</button>
 
+      <h2>상품 추가 / 수정</h2>
+
       <input type="hidden" id="edit-product-id" />
-
       <input type="text" id="admin-name" placeholder="상품명" />
-
       <input type="text" id="admin-category" placeholder="카테고리" />
-
       <input type="number" id="admin-price" placeholder="가격" />
-
       <input type="text" id="admin-image" placeholder="이미지 경로" />
-
       <input type="text" id="admin-description" placeholder="상품 설명" />
-
       <input type="number" id="admin-stock" placeholder="재고 수량" />
 
       <button onclick="saveAdminProduct()">상품 저장</button>
-
       <button onclick="clearAdminForm()">입력 초기화</button>
+
+      <hr />
+
+      <h2>상품 목록</h2>
+
+      <button onclick="resetProducts()">기본 상품으로 초기화</button>
+      <button onclick="deleteAllProducts()">전체 상품 삭제</button>
+
+      <ul id="admin-product-list"></ul>
+
+      <hr />
+
+      <section class="admin-orders">
+        <h2>전체 주문 관리</h2>
+        <button onclick="displayAdminOrders()">주문 새로고침</button>
+        <ul id="admin-order-list"></ul>
+      </section>
     </section>
-
-    <h2>상품 목록</h2>
-
-    <button onclick="resetProducts()">기본 상품으로 초기화</button>
-    <button onclick="deleteAllProducts()">전체 상품 삭제</button>
-
-    <ul id="admin-product-list"></ul>
 
     <script src="script.js"></script>
   </body>

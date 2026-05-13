@@ -65,7 +65,7 @@ const defaultProducts = [
     name: "덤벨 세트",
     category: "equipment",
     price: 49,
-    image: "https://via.placeholder.com/200?text=Dumbbell",
+    image: "images/dumbbell.webp",
     description: "홈트레이닝과 근력 운동에 좋은 기본 덤벨 세트입니다.",
     stock: 5,
   },
@@ -107,6 +107,96 @@ const defaultProducts = [
     description:
       "스쿼트, 데드리프트 같은 고중량 운동 시 허리를 지지해주는 리프팅 벨트입니다.",
     stock: 6,
+  },
+  {
+    id: 20,
+    name: "퍼포먼스 머슬핏 티셔츠",
+    category: "clothes",
+    price: 29,
+    image: "https://via.placeholder.com/200?text=Muscle+Fit+Tee",
+    description: "운동 시 땀 배출이 뛰어난 머슬핏 기능성 티셔츠입니다.",
+    stock: 10,
+  },
+  {
+    id: 21,
+    name: "트레이닝 조거 팬츠",
+    category: "clothes",
+    price: 39,
+    image: "https://via.placeholder.com/200?text=Jogger+Pants",
+    description: "헬스와 러닝에 적합한 편안한 조거 팬츠입니다.",
+    stock: 8,
+  },
+  {
+    id: 22,
+    name: "오버핏 후드집업",
+    category: "clothes",
+    price: 59,
+    image: "https://via.placeholder.com/200?text=Hoodie",
+    description: "운동 전후 가볍게 걸치기 좋은 오버핏 후드집업입니다.",
+    stock: 6,
+  },
+  {
+    id: 23,
+    name: "컴프레션 레깅스",
+    category: "clothes",
+    price: 35,
+    image: "https://via.placeholder.com/200?text=Leggings",
+    description: "하체 운동 시 안정적인 압박을 제공하는 레깅스입니다.",
+    stock: 7,
+  },
+  {
+    id: 24,
+    name: "헬스 반바지",
+    category: "clothes",
+    price: 27,
+    image: "https://via.placeholder.com/200?text=Gym+Shorts",
+    description: "통기성이 뛰어난 헬스 전용 반바지입니다.",
+    stock: 12,
+  },
+  {
+    id: 30,
+    name: "웨이 프로틴",
+    category: "supplement",
+    price: 59,
+    image: "https://via.placeholder.com/200?text=Whey+Protein",
+    description: "근육 성장과 회복에 도움을 주는 프리미엄 웨이 프로틴입니다.",
+    stock: 15,
+  },
+  {
+    id: 31,
+    name: "BCAA 아미노산",
+    category: "supplement",
+    price: 35,
+    image: "https://via.placeholder.com/200?text=BCAA",
+    description: "운동 중 근손실 방지와 회복을 위한 BCAA 보충제입니다.",
+    stock: 11,
+  },
+  {
+    id: 32,
+    name: "크레아틴 파우더",
+    category: "supplement",
+    price: 42,
+    image: "https://via.placeholder.com/200?text=Creatine",
+    description: "고강도 운동 퍼포먼스를 향상시키는 크레아틴입니다.",
+    stock: 9,
+  },
+  {
+    id: 33,
+    name: "프리워크아웃",
+    category: "supplement",
+    price: 49,
+    image: "https://via.placeholder.com/200?text=Pre+Workout",
+    description: "운동 전 집중력과 에너지를 높여주는 부스터입니다.",
+    stock: 8,
+  },
+  {
+    id: 34,
+    name: "멀티비타민",
+    category: "supplement",
+    price: 24,
+    image: "https://via.placeholder.com/200?text=Vitamin",
+    description: "운동과 건강 관리를 위한 종합 비타민입니다.",
+    stock: 14,
   },
 ];
 
@@ -217,6 +307,37 @@ app.post("/api/products", (req, res) => {
     res.json({
       message: "상품 DB 저장 완료",
       products: newProducts,
+    });
+  });
+});
+
+app.post("/api/products/reset", (req, res) => {
+  db.serialize(() => {
+    db.run("DELETE FROM products");
+
+    const stmt = db.prepare(`
+      INSERT INTO products
+      (id, name, category, price, image, description, stock)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    defaultProducts.forEach((product) => {
+      stmt.run(
+        product.id,
+        product.name,
+        product.category,
+        product.price,
+        product.image,
+        product.description,
+        product.stock,
+      );
+    });
+
+    stmt.finalize();
+
+    res.json({
+      message: "기본 상품으로 초기화 완료",
+      products: defaultProducts,
     });
   });
 });

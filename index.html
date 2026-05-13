@@ -6,93 +6,138 @@
     <title>M.D.F Shop</title>
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
-    <header>
-      <h1>M.D.F Shop</h1>
-      <p>헬스용품 전문 쇼핑몰</p>
+
+  <header>
+    <header class="site-header">
+      <div class="top-nav">
+        <a class="logo" href="index.html">M.D.F <span>SHOP</span></a>
+
+        <div class="nav-actions">
+          <a href="login.html">로그인 / 회원가입</a>
+          <a href="profile.html">내 정보</a>
+          <a href="my-orders.html">주문내역</a>
+          <button onclick="userLogout()">로그아웃</button>
+        </div>
+      </div>
+
+      <div class="hero">
+        <div class="hero-content">
+          <p class="eyebrow">PREMIUM FITNESS GEAR</p>
+          <h1>M:Muscle D:Derrick F:Fitness<br /><span>S:Shop</span></h1>
+          <p>운동기구, 운동복, 보충제까지 한 번에 준비하는 헬스 전문 쇼핑몰</p>
+
+          <div class="hero-buttons">
+            <a href="#product-list"><button>상품 보러가기</button></a>
+            <a href="admin.html"
+              ><button class="outline-btn">관리자 페이지</button></a
+            >
+          </div>
+        </div>
+      </div>
     </header>
 
-    <section class="hero">
-      <div class="hero-text">
-        <p class="hero-label">PREMIUM FITNESS GEAR</p>
-        <h2>BUILD YOUR<br /><span>STRONG BODY</span></h2>
-        <p>헬스용품, 운동기구, 보충제를 한 곳에서 만나보세요.</p>
-        <a href="#product-list">
-          <button>지금 쇼핑하기</button>
-        </a>
-      </div>
-    </section>
 
-    <div class="user-link">
-      <a href="login.html">
-        <button>로그인 / 회원가입</button>
-      </a>
+    </header>
 
-      <a href="profile.html">
-        <button>내 정보 수정</button>
-      </a>
+<div class="user-status">
+  <p id="current-user-message"></p>
+</div>
 
-      <a href="my-orders.html">
-        <button>내 주문내역</button>
-      </a>
-
-      <button onclick="userLogout()">로그아웃</button>
-
-      <p id="current-user-message"></p>
-    </div>
-
-    <div class="admin-link">
-      <a href="admin.html">
-        <button>관리자 페이지</button>
-      </a>
-    </div>
-
-    <nav>
-      <button onclick="filterProducts('all')">전체</button>
+    
+<section class="category-section">
+      <button onclick="filterProducts('all')">전체 상품</button>
       <button onclick="filterProducts('equipment')">운동기구</button>
       <button onclick="filterProducts('clothes')">운동복</button>
       <button onclick="filterProducts('supplement')">보충제</button>
-    </nav>
+    </section>
 
-    <section class="search-box">
+    <section class="toolbar">
       <input
         type="text"
         id="search-input"
-        placeholder="상품 검색..."
+        placeholder="상품명 또는 카테고리 검색..."
         oninput="searchProducts()"
       />
+
+      <div class="sort-box">
+        <button onclick="sortProducts('low')">낮은 가격순</button>
+        <button onclick="sortProducts('high')">높은 가격순</button>
+        <button onclick="sortProducts('name')">이름순</button>
+      </div>
     </section>
 
-    <section class="sort-box">
-      <button onclick="sortProducts('low')">가격 낮은순</button>
-      <button onclick="sortProducts('high')">가격 높은순</button>
-      <button onclick="sortProducts('name')">이름순</button>
-    </section>
+    <main class="shop-layout">
+      <section>
+        <div class="section-title">
+          <p>SHOP NOW</p>
+          <h2>추천 상품</h2>
+        </div>
 
-    <main>
-      <section class="products" id="product-list"></section>
+        <section class="products" id="product-list"></section>
+      </section>
 
       <aside class="cart">
         <h2>장바구니</h2>
         <ul id="cart-list"></ul>
-        <p>총액: $<span id="total">0</span></p>
+        <p class="cart-total">총액: $<span id="total">0</span></p>
+        <a href="#checkout-section">
+          <button class="checkout-shortcut">결제하러 가기</button>
+        </a>
       </aside>
     </main>
 
-    <section class="checkout">
-      <h2>주문하기</h2>
+    <section class="checkout" id="checkout-section">
+      <div class="section-title center">
+        <p>CHECKOUT</p>
+        <h2>결제하기</h2>
+      </div>
 
-      <input type="text" id="customer-name" placeholder="이름" />
-      <input type="email" id="customer-email" placeholder="이메일" />
-      <input type="text" id="customer-address" placeholder="주소" />
+      <div class="checkout-grid">
+        <div class="checkout-card">
+          <h3>배송 정보</h3>
+          <input type="text" id="customer-name" placeholder="이름" />
+          <input type="email" id="customer-email" placeholder="이메일" />
+          <input type="text" id="customer-address" placeholder="주소" />
+        </div>
 
-      <button onclick="placeOrder()">주문하기</button>
+        <div class="checkout-card">
+          <h3>카드 정보</h3>
+
+          <input
+            type="text"
+            id="card-number"
+            placeholder="카드번호 16자리"
+            maxlength="16"
+          />
+
+          <input
+            type="text"
+            id="card-expiry"
+            placeholder="유효기간 MM/YY"
+            maxlength="5"
+          />
+
+          <input
+            type="password"
+            id="card-cvc"
+            placeholder="CVC 3자리"
+            maxlength="3"
+          />
+
+          <button onclick="processPayment()">결제하기</button>
+        </div>
+      </div>
 
       <p id="order-message"></p>
+      <div id="receipt-box"></div>
     </section>
 
     <section class="orders">
-      <h2>주문 내역</h2>
+      <div class="section-title center">
+        <p>ORDER HISTORY</p>
+        <h2>주문 내역</h2>
+      </div>
+
       <button onclick="clearOrders()">전체 주문 초기화</button>
       <ul id="order-list"></ul>
     </section>
@@ -110,7 +155,9 @@
     </div>
 
     <footer>
-      <p>&copy; 2026 FitGear Shop</p>
+      <h3>M.D.F SHOP</h3>
+      <p>Train hard. Recover smart. Shop stronger.</p>
+      <p>&copy; 2026 M.D.F Shop</p>
     </footer>
 
     <script src="script.js"></script>
